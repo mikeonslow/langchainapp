@@ -3,30 +3,6 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 
 
-def main():
-    print("starting application...")
-
-    summary_template = """
-    given the {information} about a person from I want you to create
-    1. a short cummary
-    2. two interesting facts about them
-    """
-
-    summary_prompt_template = PromptTemplate(input_variables=["information"], template=summary_template)
-
-    llm = ChatOpenAI(model_name="gpt-3.3-turbo", temperature=0)
-
-    chain = LLMChain(llm=llm, prompt=summary_prompt_template)
-    # with open("/app/output/ice_breaker.txt", "w") as f:
-    #     f.write("Hello LangChain!")
-
-
-    print(chain.run(information=information))
-
-if __name__ == "__main__":
-    main()
-
-
 information = """
 
 Elon Reeve Musk FRS (/ˈiːlɒn/ EE-lon; born June 28, 1971) is a business magnate and investor. He is the founder, CEO and chief engineer of SpaceX; angel investor, CEO and product architect of Tesla, Inc.; owner and CEO of Twitter, Inc.; founder of the Boring Company; co-founder of Neuralink and OpenAI; and president of the philanthropic Musk Foundation. Musk is the second-wealthiest person in the world, according to both the Bloomberg Billionaires Index and Forbes's Real Time Billionaires list as of May 2023 primarily from his ownership stakes in Tesla and SpaceX, with an estimated net worth of around $167 billion according to the Bloomberg and $176.2 billion according to the latter.[4][5][6][7]
@@ -72,3 +48,28 @@ In 2002, PayPal was acquired by eBay for $1.5 billion in stock, of which Musk—
 
 
 """
+
+def main():
+    print("starting application...")
+
+    summary_template = """
+    given the {information} about a person from I want you to create
+    1. a short cummary
+    2. two interesting facts about them
+    """
+
+    summary_prompt_template = PromptTemplate(input_variables=["information"], template=summary_template)
+
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+
+    chain = LLMChain(llm=llm, prompt=summary_prompt_template)
+    # with open("/app/output/ice_breaker.txt", "w") as f:
+    #     f.write("Hello LangChain!")
+
+
+    print(chain.run(information=information))
+
+if __name__ == "__main__":
+    main()
+
+
