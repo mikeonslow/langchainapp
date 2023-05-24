@@ -2,14 +2,13 @@ import os
 import requests
 
 mock_data_endpoint = "https://gist.githubusercontent.com/mikeonslow/a95b3ba5bf28fcbfc81c40916be06db6/raw/dd5a41daf1c8842cbcc444c20ae7241ba52ebc6c/mike_onslow_linkedin.json"
-linkedin_profile_url = "https://www.linkedin.com/in/mikeonslow/"
 
 
-def scrape_linkedin_profile(linkedin_profile_url: str):
+def scrape_linkedin_profile(linkedin_profile_url: str, is_mock: False):
     """Scrape linkedin profile and return the profile as a dictionary"""
 
-    # response = get_data(True)  # MOCK DATA
-    response = get_data() # Live data
+    response = get_data(linkedin_profile_url, is_mock)  # MOCK DATA
+    # response = get_data() # Live data
 
     data = response.json()
 
@@ -27,10 +26,12 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
     return data
 
 
-def get_data(isMock=False):
-    if isMock:
+def get_data(linkedin_profile_url, is_mock=False):
+    if is_mock:
+        print("Using mock data")
         response = requests.get(mock_data_endpoint)
     else:
+        print("Using live data")
         header_dic = {"Authorization": f'Bearer {os.environ.get("PROXYCURL_API_KEY")}'}
         response = requests.get(
             "https://nubela.co/proxycurl/api/v2/linkedin",
