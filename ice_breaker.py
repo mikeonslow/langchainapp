@@ -2,11 +2,14 @@ from langchain import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from third_parties.linkedin import scrape_linkedin_profile
-from third_parties.deepgram import deepgram_transcribe
+from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
 import json
+
 
 def main():
     print("starting application...")
+
+    linkedin_profile_url = linkedin_lookup_agent(name="Erin Onslow")
 
     summary_template = """
     given the {information} about a person from I want you to create
@@ -26,7 +29,7 @@ def main():
     #     f.write("Hello LangChain!")
 
     linkedin_data = scrape_linkedin_profile(
-        "https://www.linkedin.com/in/eric-sadik/", False
+        linkedin_profile_url=linkedin_profile_url, is_mock=False
     )
 
     print(chain.run(information=linkedin_data))
