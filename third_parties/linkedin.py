@@ -9,7 +9,7 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
     header_dic = {"Authorization": f'Bearer {os.environ.get("PROXYCURL_API_KEY")}'}
 
     response = requests.get(
-        api_endpoint, params={"url": linkedin_profile_url}, headers=header_dic
+        "https://gist.githubusercontent.com/mikeonslow/a95b3ba5bf28fcbfc81c40916be06db6/raw/dd5a41daf1c8842cbcc444c20ae7241ba52ebc6c/mike_onslow_linkedin.json"
     )
 
     data = response.json()

@@ -3,22 +3,30 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 
 from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
+from agents.twitter_lookup_agent import lookup as twitter_lookup_agent
 from third_parties.linkedin import scrape_linkedin_profile
+from third_parties.twitter import scrape_user_tweets
 
+name = "Eden Marco Udemy"
 
 if __name__ == "__main__":
     print("Hello LangChain!")
 
-    linkedin_profile_url = linkedin_lookup_agent(name="Eden Marco Udemy")
+    linkedin_profile_url = linkedin_lookup_agent(name=name)
+    twitter_username = twitter_lookup_agent(name=name)
+    tweets = scrape_user_tweets(username=twitter_username, num_tweets=5)
 
     summary_template = """
-         given the Linkedin information {information} about a person from I want you to create:
+         given the Linkedin information {linkedin_information} and {twitter_information} about a person from I want you to create:
          1. a short summary
          2. two interesting facts about them
+         3. A topic that may be of interest to them
+         4. Creative Ice Breakers to open a conversation with them
      """
 
     summary_prompt_template = PromptTemplate(
-        input_variables=["information"], template=summary_template
+        input_variables=["linkedin_information", "twitter_information"],
+        template=summary_template,
     )
 
     llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
@@ -27,4 +35,4 @@ if __name__ == "__main__":
 
     linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
 
-    print(chain.run(information=linkedin_data))
+    print(chain.run(linkedin_information=linkedin_data, twitter_information=tweets))
